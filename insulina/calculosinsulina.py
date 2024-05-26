@@ -54,12 +54,15 @@ aaWeights = {'A': 89.09, 'C': 121.16, 'D': 133.10, 'E': 147.13, 'F': 165.19,
 # CUENTA CUANTAS VECES CUANTOS AA HAY EN INSULINA Y CUANTAS VECES SE REPITEN
 # upper convierte la secuencia en mayusculas, para contar de manera uniforme
 # .count numero de vece que aa aparece en la secuencia
-aaCountInsulin = ({x: float(insulin.upper().count(x)) for x in aaWeights.keys()})
+aaCountInsulin = ({x: float(insulin.upper().count(x)) for x in ['A', 'C',
+'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T',
+'V', 'W', 'Y']})
 print(aaCountInsulin)
 
 # Multiply the count by the weights of each aa
-molecularWeightInsulin = ({x: float(aaCountInsulin[x]*aaWeights[x]) for x in
-aaWeights}.values())  
+molecularWeightInsulin = ({x: float(aaCountInsulin[x]*aaWeights[x]) for x in ['A', 'C',
+'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T',
+'V', 'W', 'Y']}) 
 print(molecularWeightInsulin)
 #sumamos el total
 # Multiply the count by the weights  
@@ -75,6 +78,9 @@ print("Error percentage: " + str(((molecularWeightInsulin - molecularWeightInsul
 
 print("-----")
 # Aquí utilizará bucles lists, for y while, y cálculos básicos para determinar la carga neta de la insulina entre pH 0 y pH 14.
+
+
+
 # Python3.6  
 # Coding: utf-8  
 # Store the human preproinsulin sequence in a variable called preproinsulin:  
@@ -93,8 +99,7 @@ pKR = {
     "h": 6.00,
     "r": 12.48,
     "d": 3.65,
-    "e": 4.25
-        
+    "e": 4.25       
 }
 #metodo count()  para contar los números de cada aminoácido dentro de una lista.
 print(insulin.count('y')) #4
@@ -102,16 +107,18 @@ print(insulin.count('y')) #4
 print(float(insulin.count("y"))) #4.0
 #ahora cvamos a identificar todas las entidades de una lista.
 #vamos a comprimir la lista para poder contar el numero de veces de cada aa.
-#entonces esa x ya definida, sabe que es lo que tienen que hacer cuando va iterando
+#entonces esa x ya definidasabe que es lo que tienen que hacer cuando va iterando
 #en cada elemento del diccionario/lista.
-seqCount = ({x: float(insulin.count(x)) for x in ["y", "c", "k", "h", "r", "d", "e"]})
-print(seqCount)
 
+seqCount = ({x: float(insulin.count(x)) for x in ['y','c','k','h','r','d','e']})
+print(seqCount)
 #vamos a escribir la formula de la carga neta. def variable pH
 pH = 0
+
 while pH <= 14:
     netCharge = (
         +(sum({x: ((seqCount[x]*(10**pKR[x]))/((10**pH)+(10**pKR[x]))) for x in ['k','h','r']}.values()))
-    -(sum({x: ((seqCount[x]*(10**pH))/((10**pH)+(10**pKR[x]))) for x in ['y','c','d','e']}.values())))
+        -(sum({x: ((seqCount[x]*(10**pH))/((10**pH)+(10**pKR[x]))) for x in ['y','c','d','e']}.values())))
     pH +=1
 print('{0:.2f}'.format(pH), netCharge)
+
