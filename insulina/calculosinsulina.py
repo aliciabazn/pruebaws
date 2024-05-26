@@ -69,3 +69,49 @@ molecularWeightInsulin = sum({x: (aaCountInsulin[x]*aaWeights[x]) for x in
 print("The rough molecular weight of insulin: " +
 str(molecularWeightInsulin))
 
+molecularWeightInsulinActual = 5807.63
+print("Error percentage: " + str(((molecularWeightInsulin - molecularWeightInsulinActual)/molecularWeightInsulinActual)*100))
+
+
+print("-----")
+# Aquí utilizará bucles lists, for y while, y cálculos básicos para determinar la carga neta de la insulina entre pH 0 y pH 14.
+# Python3.6  
+# Coding: utf-8  
+# Store the human preproinsulin sequence in a variable called preproinsulin:  
+preproInsulin = "malwmrllpllallalwgpdpaaafvnqhlcgshlvealylvcgergffytpktrreaedlqvgqvelgggpgagslqplalegslqkrgiveqcctsicslyqlenycn"  
+# Store the remaining sequence elements of human insulin in variables:  
+lsInsulin = "malwmrllpllallalwgpdpaaa"  
+bInsulin = "fvnqhlcgshlvealylvcgergffytpkt"  
+aInsulin = "giveqcctsicslyqlenycn"  
+cInsulin = "rreaedlqvgqvelgggpgagslqplalegslqkr"  
+insulin = bInsulin + aInsulin
+#son los unicos aminoacidos que contribuyen al cálculo de la carga neta.
+pKR = {
+    "y": 10.07,
+    "c": 8.18,
+    "k": 10.53,
+    "h": 6.00,
+    "r": 12.48,
+    "d": 3.65,
+    "e": 4.25
+        
+}
+#metodo count()  para contar los números de cada aminoácido dentro de una lista.
+print(insulin.count('y')) #4
+#para convertirlo en un float decimal
+print(float(insulin.count("y"))) #4.0
+#ahora cvamos a identificar todas las entidades de una lista.
+#vamos a comprimir la lista para poder contar el numero de veces de cada aa.
+#entonces esa x ya definida, sabe que es lo que tienen que hacer cuando va iterando
+#en cada elemento del diccionario/lista.
+seqCount = ({x: float(insulin.count(x)) for x in ["y", "c", "k", "h", "r", "d", "e"]})
+print(seqCount)
+
+#vamos a escribir la formula de la carga neta. def variable pH
+pH = 0
+while pH <= 14:
+    netCharge = (
+        +(sum({x: ((seqCount[x]*(10**pKR[x]))/((10**pH)+(10**pKR[x]))) for x in ['k','h','r']}.values()))
+    -(sum({x: ((seqCount[x]*(10**pH))/((10**pH)+(10**pKR[x]))) for x in ['y','c','d','e']}.values())))
+    pH +=1
+print('{0:.2f}'.format(pH), netCharge)
